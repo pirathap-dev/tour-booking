@@ -21,6 +21,10 @@ import ForgotPassword from './components/user/forgotPAssword';
 import ResetPassword from './components/user/resetPassword';
 import Cart from './components/cart/cart';
 import Payment from './components/cart/payment';
+import OrderSuccess from './components/cart/orderSuccess';
+import UserOrders from './components/order/userOrders';
+import OrderDetail from './components/order/orderDetail';
+import Dashboard from './components/admin/dashboard';
 
 
 
@@ -52,16 +56,15 @@ function App() {
               <Route path='/password/reset/:token' element={<ResetPassword />} />
               <Route path='/cart' element={<Cart />} />
               <Route path='/payment' element={<ProtectedRoute><Payment /></ProtectedRoute>} />
-              {/* <Route path='/order/confirm' element={<ProtectedRoute><ConfirmOrder /></ProtectedRoute>} /> */}
-              {/* <Route path='/order/success' element={<ProtectedRoute><OrderSuccess/></ProtectedRoute>} /> */}
-              {/* <Route path='/orders' element={<ProtectedRoute><UserOrders/></ProtectedRoute>} /> */}
-              {/* <Route path='/order/:id' element={<ProtectedRoute><OrderDetail/></ProtectedRoute>} /> */}
+              <Route path='/order/success' element={<ProtectedRoute><OrderSuccess/></ProtectedRoute>} />
+              <Route path='/bookings' element={<ProtectedRoute><UserOrders/></ProtectedRoute>} />
+              <Route path='/booking/:id' element={<ProtectedRoute><OrderDetail/></ProtectedRoute>} />
             </Routes>
           </div>
 
           {/* Admin Routes */}
-          {/* <Routes> */}
-            {/* <Route path='/admin/dashboard' element={<ProtectedRoute isAdmin={true}><Dashboard/></ProtectedRoute> } /> */}
+          <Routes>
+            <Route path='/admin/dashboard' element={<ProtectedRoute isAdmin={true}><Dashboard/></ProtectedRoute> } />
             {/* <Route path='/admin/products' element={<ProtectedRoute isAdmin={true}><ProductList/></ProtectedRoute> } /> */}
             {/* <Route path='/admin/products/create' element={<ProtectedRoute isAdmin={true}><NewProduct/></ProtectedRoute> } /> */}
             {/* <Route path='/admin/product/:id' element={<ProtectedRoute isAdmin={true}><UpdateProduct/></ProtectedRoute> } /> */}
@@ -70,7 +73,7 @@ function App() {
             {/* <Route path='/admin/users' element={<ProtectedRoute isAdmin={true}><UserList/></ProtectedRoute> } /> */}
             {/* <Route path='/admin/user/:id' element={<ProtectedRoute isAdmin={true}><UpdateUser/></ProtectedRoute> } /> */}
             {/* <Route path='/admin/reviews' element={<ProtectedRoute isAdmin={true}><ReviewList/></ProtectedRoute> } /> */}
-          {/* </Routes> */}
+          </Routes>
           <Footer />
         </HelmetProvider>
       </div>

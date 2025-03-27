@@ -77,11 +77,17 @@ exports.newBooking = catchAsyncError(async (req, res, next) => {
 // Get single booking - /api/v1/booking/:id
 exports.getSingleBooking = catchAsyncError(async (req, res, next) => {
     const booking = await Booking.findById(req.params.id)
-        .populate('user', 'name email')
-        .populate('tour', 'name price category');
+        .populate({
+            path: 'user',
+            select: 'name email'  // Optionally include user details
+        })
+        .populate({
+            path: 'tours.tourId',
+            select: 'name price category images description'  // Added description for more info
+        });
 
     if (!booking) {
-        return next(new ErrorHandler(`Booking not found with this id: ${req.params.id}`, 404));
+        return next(new ErrorHandler(`Booking not found with id: ${req.params.id}`, 404));
     }
 
     res.status(200).json({
@@ -93,7 +99,7 @@ exports.getSingleBooking = catchAsyncError(async (req, res, next) => {
 // Get logged-in user bookings - /api/v1/mybookings
 exports.myBookings = catchAsyncError(async (req, res, next) => {
     const bookings = await Booking.find({ user: req.user.id })
-        .populate('tour', 'name price category date');
+        .populate('tours.tourId', 'name price category');
 
     res.status(200).json({
         success: true,
@@ -105,7 +111,7 @@ exports.myBookings = catchAsyncError(async (req, res, next) => {
 exports.bookings = catchAsyncError(async (req, res, next) => {
     const bookings = await Booking.find()
         .populate('user', 'name email')
-        .populate('tour', 'name price category date');
+        .populate('tours.tourId', 'name price category');
 
     let totalAmount = 0;
 

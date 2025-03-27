@@ -24,7 +24,7 @@ const orderSlice = createSlice({
                 ...state,
                 loading: false,
                 isOrderPlaced: true,
-                orderDetail: action.payload.order
+                orderDetail: action.payload.booking
             }
         },
         createOrderFail(state, action) {
@@ -50,7 +50,7 @@ const orderSlice = createSlice({
             return {
                 ...state,
                 loading: false,
-                userOrder: action.payload.orders
+                userOrder: action.payload.bookings
             }
         }, 
         userOrderFail(state, action){
@@ -70,7 +70,7 @@ const orderSlice = createSlice({
             return {
                 ...state,
                 loading: false,
-                orderDetail: action.payload.order
+                orderDetail: action.payload
             }
         }, 
         orderDetailFail(state, action){
@@ -90,7 +90,7 @@ const orderSlice = createSlice({
             return {
                 ...state,
                 loading: false,
-                adminOrder: action.payload.orders
+                adminOrder: action.payload.bookings
             }
         }, 
         adminOrderFail(state, action){
@@ -151,12 +151,18 @@ const orderSlice = createSlice({
                 ...state,
                 isOrderUpdated: false
             }
+        }, 
+        clearOrderPlaced(state,action){
+            return{
+                ...state,
+                isOrderPlaced: false
+            }
         }
     }
 });
 
 const { actions, reducer } = orderSlice;
 
-export const { createOrderRequest, createOrderSuccess, createOrderFail, clearError, userOrderRequest, userOrderSuccess, userOrderFail, orderDetailRequest, orderDetailSuccess, orderDetailFail, adminOrderRequest, adminOrderSuccess, adminOrderFail, deleteOrderRequest, deleteOrderSuccess, deleteOrderFail, updateOrderRequest, updateOrderSuccess, updateOrderFail, clearOrderDeleted, clearOrderUpdated} = actions;
+export const { createOrderRequest, createOrderSuccess, createOrderFail, clearError, userOrderRequest, userOrderSuccess, userOrderFail, orderDetailRequest, orderDetailSuccess, orderDetailFail, adminOrderRequest, adminOrderSuccess, adminOrderFail, deleteOrderRequest, deleteOrderSuccess, deleteOrderFail, updateOrderRequest, updateOrderSuccess, updateOrderFail, clearOrderDeleted, clearOrderUpdated, clearOrderPlaced} = actions;
 
 export default reducer;

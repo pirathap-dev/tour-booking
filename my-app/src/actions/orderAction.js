@@ -22,7 +22,7 @@ export const createOrder = (order) => async(dispatch) => {
 export const userOrders = async(dispatch) => {
     try{
         dispatch(userOrderRequest())
-        const {data} = await api.get('/myorders')
+        const {data} = await api.get('/mybookings')
         dispatch(userOrderSuccess(data))
     }catch(error){
         dispatch(userOrderFail(error?.response?.data?.message))
@@ -32,17 +32,17 @@ export const userOrders = async(dispatch) => {
 export const orderDetail = id => async(dispatch) => {
     try{
         dispatch(orderDetailRequest())
-        const {data} = await api.get(`/order/${id}`)
+        const {data} = await api.get(`/book/${id}`)
         dispatch(orderDetailSuccess(data))
     }catch(error){
         dispatch(orderDetailFail(error?.response?.data?.message))
     }
 }
 
-export const adminOrders = async(dispatch) => {
+export const adminBookings = async(dispatch) => {
     try{
         dispatch(adminOrderRequest())
-        const {data} = await api.get(`/admin/orders`)
+        const {data} = await api.get(`/admin/bookings`)
         dispatch(adminOrderSuccess(data))
     }catch(error){
         dispatch(adminOrderFail(error?.response?.data?.message))

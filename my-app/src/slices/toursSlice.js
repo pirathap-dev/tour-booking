@@ -29,23 +29,23 @@ const toursSlice = createSlice({
                 error: action.payload.error
             }
         },
-        // adminToursRequest(state, action) {
-        //     return {
-        //         loading: true,
-        //     }
-        // },
-        // adminToursSuccess(state, action) {
-        //     return {
-        //         loading: false,
-        //         products: action.payload.products,
-        //     }
-        // },
-        // adminToursFail(state, action) {
-        //     return {
-        //         loading: false,
-        //         error: action.payload.error
-        //     }
-        // },
+        adminToursRequest(state, action) {
+            return {
+                loading: true,
+            }
+        },
+        adminToursSuccess(state, action) {
+            return {
+                loading: false,
+                tours: action.payload.tours,
+            }
+        },
+        adminToursFail(state, action) {
+            return {
+                loading: false,
+                error: action.payload.error
+            }
+        },
         clearError(state, action){
             return{
                 ...state,
@@ -57,7 +57,7 @@ const toursSlice = createSlice({
 
 const {actions, reducer} = toursSlice;
 
-export const {toursRequest, toursSuccess, toursFail, clearError} = actions;
+export const {toursRequest, toursSuccess, toursFail,adminToursRequest, adminToursSuccess, adminToursFail, clearError} = actions;
 
 export default reducer;
 

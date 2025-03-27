@@ -160,7 +160,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { createOrder } from '../../actions/orderAction';
 import { orderCompleted } from "../../slices/cartSlice";
-import { clearError } from "../../slices/orderSlice";
+import { clearError, clearOrderPlaced } from "../../slices/orderSlice";
 import { toast } from 'react-toastify';
 
 export default function Payment() {
@@ -205,11 +205,12 @@ export default function Payment() {
 
     useEffect(() => {
         if (isOrderPlaced) {
+            navigate('/order/success');
             toast.success('Order placed successfully', {
                 position: "top-center",
                 onClose: () => {
                     dispatch(orderCompleted());
-                    navigate('/myBookings');
+                    dispatch(clearOrderPlaced());
                 }
             });
         }
@@ -257,7 +258,7 @@ export default function Payment() {
 
                     <div className="form-group">
                         <label htmlFor="name_field">Name</label>
-                        <input type="text" id="name_field" className="form-control" name='name' value={name} onChange={e => setName(e.target.value)} required />
+                        <input type="text" id="name_field" className="form-control" name='name' value={name} onChange={e => setName(e.target.value)} required readOnly/>
                     </div>
 
                     <div className="form-group">

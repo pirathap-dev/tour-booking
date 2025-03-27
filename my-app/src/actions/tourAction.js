@@ -1,6 +1,6 @@
 import api from '../confiq/axiosConfig';
 import { createReviewFail, createReviewRequest, createReviewSuccess, tourFail, tourRequest, tourSuccess } from '../slices/tourSlice';
-import {toursFail, toursRequest, toursSuccess } from '../slices/toursSlice';
+import {adminToursFail, adminToursRequest, adminToursSuccess, toursFail, toursRequest, toursSuccess } from '../slices/toursSlice';
 
 export const getTours = (keyword, price, category, rating, currentPage) => async (dispatch) => {
 
@@ -61,19 +61,19 @@ export const createReview = reviewData => async (dispatch) => {
 }
 
 
-// export const getAdminProducts = async (dispatch) => {
+export const getAdminTours = async (dispatch) => {
 
-//     try {
-//         dispatch(adminProductsRequest());
+    try {
+        dispatch(adminToursRequest());
 
-//         const { data } = await api.get(`/admin/products`);
+        const { data } = await api.get(`/admin/tours`);
 
-//         dispatch(adminProductsSuccess(data));
+        dispatch(adminToursSuccess(data));
 
-//     } catch (error) {
-//         dispatch(adminProductsFail({ error: error.response?.data?.message || 'An error occurred' }));
-//     }
-// }
+    } catch (error) {
+        dispatch(adminToursFail({ error: error.response?.data?.message || 'An error occurred' }));
+    }
+}
 
 // export const createNewProduct = productData => async (dispatch) => {
 
