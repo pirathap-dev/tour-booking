@@ -6,6 +6,8 @@ import { toast } from 'react-toastify';
 import MetaData from "./layouts/MetaData";
 import Pagination from 'react-js-pagination';
 import Loader from './layouts/loader';
+import { Link } from "react-router-dom";
+
 
 
 
@@ -42,7 +44,7 @@ export default function Home() {
                     <section id="products" className="container mt-5">
                         <div className="row">
                             {tours && tours.map(tour => (
-                                <Tour col={3} key={tour._id} tour={tour} />
+                                <Tour col={4} key={tour._id} tour={tour} />
                             ))}
                         </div>
                     </section>
@@ -61,6 +63,10 @@ export default function Home() {
                             />
                         </div>
                         : null}
+
+                    <Link to="/safaris" className="btn btn-primary btn-block mt-3">
+                        Trending Safari
+                    </Link>
 
                 </Fragment>
             }

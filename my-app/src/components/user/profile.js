@@ -30,9 +30,16 @@ export default function Profile() {
                 <h4>Joined</h4>
                 <p>{String(user?.createdAt).substring(0, 10)}</p>
 
-                <Link to={'/bookings'} className="btn btn-danger btn-block mt-5">
-                    My Bookings
-                </Link>
+                <div className="d-flex">
+                    <Link to="/bookings" className="btn btn-danger btn-block mt-5 mr-1">
+                        My Tour Bookings
+                    </Link>
+
+                    <Link to="/safariBookings" className="btn btn-warning btn-block mt-5 ml-1">
+                        My Safari Bookings
+                    </Link>
+                </div>
+
 
                 <Link to="/myprofile/update/password" className="btn btn-primary btn-block mt-3">
                     Change Password

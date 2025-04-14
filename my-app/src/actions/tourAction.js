@@ -1,5 +1,5 @@
 import api from '../confiq/axiosConfig';
-import { createReviewFail, createReviewRequest, createReviewSuccess, tourFail, tourRequest, tourSuccess } from '../slices/tourSlice';
+import { createReviewFail, createReviewRequest, createReviewSuccess, deleteReviewFail, deleteReviewRequest, deleteReviewSuccess, deleteTourFail, deleteTourRequest, deleteTourSuccess, newTourFail, newTourRequest, newTourSuccess, reviewsFail, reviewsRequest, reviewsSuccess, tourFail, tourRequest, tourSuccess, updateTourFail, updateTourRequest, updateTourSuccess } from '../slices/tourSlice';
 import {adminToursFail, adminToursRequest, adminToursSuccess, toursFail, toursRequest, toursSuccess } from '../slices/toursSlice';
 
 export const getTours = (keyword, price, category, rating, currentPage) => async (dispatch) => {
@@ -75,78 +75,78 @@ export const getAdminTours = async (dispatch) => {
     }
 }
 
-// export const createNewProduct = productData => async (dispatch) => {
+export const createNewTour = TourData => async (dispatch) => {
 
-//     try {
-//         dispatch(newProductRequest())
+    try {
+        dispatch(newTourRequest())
 
-//         const { data } = await api.post(`/admin/product/new`, productData);
+        const { data } = await api.post(`/admin/tour/new`, TourData);
 
-//         dispatch(newProductSuccess(data))
+        dispatch(newTourSuccess(data))
 
-//     } catch (error) {
+    } catch (error) {
 
-//         dispatch(newProductFail(error.response.data.message))
-//     }
+        dispatch(newTourFail(error.response.data.message))
+    }
 
-// }
+}
 
-// export const deleteProduct = id => async (dispatch) => {
+export const deleteTour = id => async (dispatch) => {
 
-//     try {
-//         dispatch(deleteProductRequest());
+    try {
+        dispatch(deleteTourRequest());
 
-//         await api.delete(`/admin/product/${id}`);
+        await api.delete(`/admin/tour/${id}`);
 
-//         dispatch(deleteProductSuccess());
+        dispatch(deleteTourSuccess());
 
-//     } catch (error) {
-//         dispatch(deleteProductFail({ error: error.response?.data?.message || 'An error occurred' }));
-//     }
-// }
+    } catch (error) {
+        dispatch(deleteTourFail({ error: error.response?.data?.message || 'An error occurred' }));
+    }
+}
 
-// export const updateProduct = (id, productData) => async (dispatch) => {
+export const updateTour = (id, TourData) => async (dispatch) => {
 
-//     try {
-//         dispatch(updateProductRequest())
+    try {
+        dispatch(updateTourRequest())
 
-//         const { data } = await api.put(`/admin/product/${id}`, productData);
+        const { data } = await api.put(`/admin/tour/${id}`, TourData);
 
-//         dispatch(updateProductSuccess(data))
+        dispatch(updateTourSuccess(data))
 
-//     } catch (error) {
+    } catch (error) {
 
-//         dispatch(updateProductFail(error.response.data.message))
-//     }
+        dispatch(updateTourFail(error.response.data.message))
+    }
 
-// }
+}
 
-// export const getReviews = id => async (dispatch) => {
+export const getReviews = id => async (dispatch) => {
 
-//     try {
-//         dispatch(reviewsRequest());
-
-
-//         const { data } = await api.get(`/admin/reviews`, { params: { id } });
-
-//         dispatch(reviewsSuccess(data));
-
-//     } catch (error) {
-//         dispatch(reviewsFail({ error: error.response?.data?.message || 'An error occurred' }));
-//     }
-// }
-
-// export const deleteReviews = (productId, id) => async (dispatch) => {
-
-//     try {
-//         dispatch(deleteReviewRequest());
+    try {
+        dispatch(reviewsRequest());
 
 
-//         await api.delete(`/admin/reviews`, { params: { productId,id } });
+        const { data } = await api.get(`/admin/reviews`, { params: { id } });
 
-//         dispatch(deleteReviewSuccess());
+        dispatch(reviewsSuccess(data));
 
-//     } catch (error) {
-//         dispatch(deleteReviewFail({ error: error.response?.data?.message || 'An error occurred' }));
-//     }
-// }
+    } catch (error) {
+        dispatch(reviewsFail({ error: error.response?.data?.message || 'An error occurred' }));
+    }
+}
+
+export const deleteReviews = (tourId, id) => async (dispatch) => {
+
+    try {
+        dispatch(deleteReviewRequest());
+
+
+        await api.delete(`/admin/reviews`, { params: { tourId,id } });
+
+        dispatch(deleteReviewSuccess());
+
+    } catch (error) {
+        dispatch(deleteReviewFail({ error: error.response?.data?.message || 'An error occurred' }));
+    }
+}

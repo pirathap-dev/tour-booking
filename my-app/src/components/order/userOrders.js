@@ -87,7 +87,7 @@ export default function UserOrders(){
     return(
         <Fragment> 
             <MetaData title='My Bookings' />
-            <h1 className='mt-5'>My Bookings</h1>
+            <h1 className='mt-5'>My Tour Bookings</h1>
             <MDBDataTable
                 className='px-3'
                 bordered

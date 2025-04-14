@@ -46,8 +46,8 @@ export default function Cart() {
 
                     <div className="row d-flex justify-content-between">
                         <div className="col-12 col-lg-8">
-                            {items.map(item => (
-                                <Fragment>
+                            {items.map((item, index) => (
+                                <Fragment key={item.tour + index}>
                                     <hr />
                                     <div className="cart-item">
                                         <div className="row">
@@ -56,7 +56,7 @@ export default function Cart() {
                                             </div>
 
                                             <div className="col-5 col-lg-3">
-                                                <Link to={`/product/${item.tour}`}>{item.name}</Link>
+                                                <Link to={`/tour/${item.tour}`}>{item.name}</Link>
                                                 <p></p>
                                                 {/* <h6><b>{formatDate(item.tourDate)}</b></h6> */}
                                                 <h6 style={{ color: '#006400', fontStyle: 'italic' }} className="fw-bold mt-2">

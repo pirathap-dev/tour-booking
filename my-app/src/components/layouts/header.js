@@ -87,7 +87,8 @@ export default function Header() {
                         <Dropdown.Menu>
                             {user.role == 'admin' && <Dropdown.Item onClick={() => { navigate('/admin/dashboard') }} className='text-dark'>Dashboard</Dropdown.Item>}
                             <Dropdown.Item onClick={() => { navigate('/myprofile') }} className='text-dark'>Profile</Dropdown.Item>
-                            <Dropdown.Item onClick={() => { navigate('/bookings') }} className='text-dark'>Bookings</Dropdown.Item>
+                            <Dropdown.Item onClick={() => { navigate('/bookings') }} className='text-dark'>Tour Bookings</Dropdown.Item>
+                            <Dropdown.Item onClick={() => { navigate('/safariBookings') }} className='text-dark'>Safari Bookings</Dropdown.Item>
                             <Dropdown.Item onClick={logoutHandler} className='text-danger'>Log out</Dropdown.Item>
                         </Dropdown.Menu>
                     </Dropdown>
@@ -95,7 +96,7 @@ export default function Header() {
                     <Link to="/login" className="btn" id="login_btn">Login</Link>
                 }
 
-                <Link to='/cart'><span id="cart" className="ml-3">Cart</span></Link>
+                <Link to='/cart'><span id="cart" className="ml-3">Tours</span></Link>
                 <span className="ml-1" id="cart_count">{cartItems.length}</span>
             </div>
         </nav>

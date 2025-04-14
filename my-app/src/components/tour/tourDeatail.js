@@ -108,7 +108,7 @@ export default function TourDetail() {
 
                         <div className="col-12 col-lg-5 mt-5">
                             <h3>{tour?.name}</h3>
-                            <p id="product_id">Product # {tour?._id}</p>
+                            <p id="product_id">Tour # {tour?._id}</p>
 
                             <hr />
 

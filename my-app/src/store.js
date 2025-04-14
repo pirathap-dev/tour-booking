@@ -6,6 +6,10 @@ import authReducer from './slices/authSlice';
 import cartReducer from './slices/cartSlice';
 import orderReducer from './slices/orderSlice';
 import userReducer from './slices/userSlice';
+import safariReducer from './slices/safariSlice';
+import safarisReducer from './slices/safarisSlice';
+import safariCartReducer from './slices/safariCartSlice';
+import safariOrderReducer from './slices/safariOrderSlice';
 
 const reducer = combineReducers({
     toursState: toursReducer,
@@ -13,7 +17,11 @@ const reducer = combineReducers({
     authState: authReducer,
     cartState: cartReducer,
     orderState: orderReducer,
-    userState: userReducer
+    userState: userReducer,
+    safariState: safariReducer,
+    safarisState: safarisReducer,
+    safariCartState: safariCartReducer,
+    safariOrderState : safariOrderReducer
 });
 
 const store = configureStore({

@@ -34,7 +34,7 @@ exports.newBooking = catchAsyncError(async (req, res, next) => {
         };
     });
 
-    
+
 
     // Validate total amount
     if (!totalAmount) {
@@ -64,7 +64,7 @@ exports.newBooking = catchAsyncError(async (req, res, next) => {
         paymentSlip
     });
 
-    
+
 
     res.status(201).json({
         success: true,
@@ -116,7 +116,7 @@ exports.bookings = catchAsyncError(async (req, res, next) => {
     let totalAmount = 0;
 
     bookings.forEach(booking => {
-        totalAmount += booking.totalAmount;
+        totalAmount += Number(booking.totalAmount);
     });
 
     res.status(200).json({
@@ -133,10 +133,22 @@ exports.updateBooking = catchAsyncError(async (req, res, next) => {
     if (booking.status === 'Confirmed') {
         return next(new ErrorHandler('Booking has already been confirmed', 400));
     }
+    if (booking.status === 'Cancelled') {
+        return next(new ErrorHandler('Booking has already been cancelled', 400));
+    }
+
+    if (req.body.status === 'Confirmed' && booking.paymentStatus !== 'Verified') {
+        return next(new ErrorHandler('Cannot confirm booking unless payment is verified', 400));
+    }
 
     // Update the booking status
-    booking.status = req.body.status;
-    booking.paymentStatus = req.body.paymentStatus;
+    if (req.body.status) {
+        booking.status = req.body.status;
+    }
+
+    if (req.body.paymentStatus) {
+        booking.paymentStatus = req.body.paymentStatus;
+    }
     booking.updatedAt = Date.now();
 
     await booking.save();

@@ -446,12 +446,15 @@ footer {
   border-left: 20px solid white;
 }
 
+
+
 @media (max-width: 768px) {
   .step {
     font-size: 12px; /* Smaller font size */
     border-top-right-radius: 11px;
     border-bottom-right-radius: 11px;
   }
+
 
   .triangle-active,
   .triangle-incomplete,
@@ -657,6 +660,7 @@ footer {
   color: #fa9c23;
 }
 
+
 /* Admin Sidebar */
 
 .sidebar-wrapper {
@@ -675,7 +679,7 @@ footer {
 #sidebar {
   min-width: 100%;
   max-width: 100%;
-  background: #232f3e;
+  background: #171d41;
   color: #fff;
   transition: all 0.3s;
 }

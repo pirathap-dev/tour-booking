@@ -52,7 +52,7 @@ export const adminBookings = async(dispatch) => {
 export const deleteOrder = id => async(dispatch) => {
     try{
         dispatch(deleteOrderRequest())
-        const {data} = await api.delete(`/admin/order/${id}`)
+        const {data} = await api.delete(`/admin/booking/${id}`)
         dispatch(deleteOrderSuccess(data))
     }catch(error){
         dispatch(deleteOrderFail(error?.response?.data?.message))
@@ -62,7 +62,7 @@ export const deleteOrder = id => async(dispatch) => {
 export const updateOrders = (id, orderData) => async(dispatch) => {
     try{
         dispatch(updateOrderRequest())
-        const {data} = await api.put(`/admin/order/${id}`, orderData)
+        const {data} = await api.put(`/admin/booking/${id}`, orderData)
         dispatch(updateOrderSuccess(data))
     }catch(error){
         dispatch(updateOrderFail(error?.response?.data?.message))
