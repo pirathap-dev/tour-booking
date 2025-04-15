@@ -47,35 +47,28 @@ exports.registerUser = catchAsyncError(async (req, res, next) => {
     let avatar;
 
     if (req.file) {
-        try {
-            // Create a form data object for ImgBB API
-            const formData = new FormData();
-            formData.append('image', req.file.buffer, req.file.originalname); // Image buffer and name
+        // Convert the image buffer to a base64 string
+        const base64Image = req.file.buffer.toString('base64');
 
-            // Make the request to ImgBB API
-            const response = await axios.post('https://api.imgbb.com/1/upload', formData, {
-                headers: {
-                    'Content-Type': 'multipart/form-data',
-                    'Authorization': `Client-API-Key ${process.env.IMGBB_API_KEY}`
-                }
+        try {
+            const response = await axios.post(`https://api.imgbb.com/1/upload?key=${process.env.IMGBB_API_KEY}`, {
+                image: base64Image,
+                name: req.file.originalname
             });
 
-            // If the upload is successful, get the image URL
             avatar = response.data.data.url;
         } catch (error) {
+            console.error(error.response?.data || error.message);
             return next(new ErrorHandler('Image upload failed, please try again!', 500));
         }
     }
 
-    // Create the user
     const user = await User.create({
         name,
         email,
         password,
         avatar
     });
-
-    const token = user.getJwtToken();
 
     sendToken(user, 201, res);
 });
