@@ -1,4 +1,4 @@
 const serverless = require('serverless-http');
-const app = require('../app'); // Adjust the path based on your project structure
+const app = require('../app');
 
 module.exports.handler = serverless(app);
