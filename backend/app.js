@@ -8,7 +8,7 @@ const dotenv = require('dotenv');
 dotenv.config({ path: path.join(__dirname, "config/config.env") });
 
 const corsOptions = {
-    origin: 'http://localhost:3000', // Frontend URL
+    origin: process.env.FRONTEND_URL, // Frontend URL
     methods: 'GET,POST,PUT,DELETE', // Allowed methods
     credentials: true, // Allow cookies if needed
 };
