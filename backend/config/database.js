@@ -12,19 +12,13 @@
 
 const mongoose = require('mongoose');
 
-let isConnected = false; // Add this to avoid reconnecting on every invocation
+let isConnected = false;
 
 const connectDatabase = async () => {
-  if (isConnected) {
-    return;
-  }
+  if (isConnected) return;
 
   try {
-    const conn = await mongoose.connect(process.env.DB_LOCAL_URI, {
-      useNewUrlParser: true,
-      useUnifiedTopology: true,
-    });
-
+    const conn = await mongoose.connect(process.env.MONGO_URI);
     isConnected = true;
     console.log(`MongoDB connected to host: ${conn.connection.host}`);
   } catch (err) {
@@ -34,3 +28,4 @@ const connectDatabase = async () => {
 };
 
 module.exports = connectDatabase;
+
