@@ -11,9 +11,7 @@ const path = require('path');
 //         cb(null, file.originalname)
 //     }
 // })})
-
-const storage = multer.memoryStorage();
-const upload = multer({ storage });
+const upload = multer({ storage: multer.memoryStorage() });
 
 
 const { registerUser, loginUser, logoutUser, forgotPassword, resetPassword, getUserProfile, changePassword, updateProfile, getAllUsers, getUser, updateUser, deleteUser} = require('../controllers/authController');
