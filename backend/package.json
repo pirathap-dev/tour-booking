@@ -3,9 +3,9 @@
   "version": "1.0.0",
   "main": "server.js",
   "scripts": {
-    "start": "nodemon backend/server.js",
-    "dev": "set NODE_ENV=development && nodemon backend/server.js",
-    "prod": "set NODE_ENV=production && nodemon backend/server.js"
+    "start": "nodemon backend/api/server.js",
+    "dev": "set NODE_ENV=development && nodemon backend/api/server.js",
+    "prod": "set NODE_ENV=production && nodemon backend/api/server.js"
   },
   "keywords": [],
   "author": "Pirathap",
