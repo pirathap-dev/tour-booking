@@ -1,7 +1,7 @@
 {
   "name": "tour-booking",
   "version": "1.0.0",
-  "main": "server.js",
+  "main": "api/server.js",
   "scripts": {
     "start": "nodemon backend/api/server.js",
     "dev": "set NODE_ENV=development && nodemon backend/api/server.js",
