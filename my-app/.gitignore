@@ -6,9 +6,9 @@
 .pnp.js
 
 
-src/config/config.env
+src/confiq/config.env
 
-/src/config/config.env
+/src/confiq/config.env
 
 # testing
 /coverage
