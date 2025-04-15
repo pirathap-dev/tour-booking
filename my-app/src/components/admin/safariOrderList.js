@@ -80,7 +80,7 @@ export default function SafariOrderList() {
             data.rows.push({
                 id: order._id,
                 noOfSafaris: order.safaris.length,
-                amount: `$${order.totalAmount}`,
+                amount: `Rs.${order.totalAmount}`,
                 paymentStatus: <p style={{ color: paymentStatusColor }}>{order.paymentStatus}</p>,
                 status: <p style={{ color: statusColor }}>{order.status}</p>,
                 actions: (

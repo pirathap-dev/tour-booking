@@ -80,7 +80,7 @@ export default function TourOrderList() {
             data.rows.push({
                 id: order._id,
                 noOfTours: order.tours.length,
-                amount: `$${order.totalAmount}`,
+                amount: `Rs.${order.totalAmount}`,
                 paymentStatus: <p style={{ color: paymentStatusColor }}>{order.paymentStatus}</p>,
                 status: <p style={{ color: statusColor }}>{order.status}</p>,
                 actions: (

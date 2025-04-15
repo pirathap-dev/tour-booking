@@ -69,7 +69,6 @@ function App() {
         <HelmetProvider>
           <Routes>
             <Route element={<UserLayout />}>
-              <Route path='/' element={<Home />} />
               <Route path='/search/:keyword' element={<TourSearch />} />
               <Route path='/tour/:id' element={<TourDetail />} />
               <Route path='/login' element={<Login />} />
@@ -96,21 +95,22 @@ function App() {
           {/* Admin Routes */}
           <Routes>
             <Route element={<AdminLayout />}>
+              <Route path='/' element={<Home />} />
               <Route path='/admin/dashboard' element={<ProtectedRoute isAdmin={true}><Dashboard /></ProtectedRoute>} />
-              <Route path='/admin/tours' element={<ProtectedRoute isAdmin={true}><TourList/></ProtectedRoute> } />
-              <Route path='/admin/tours/create' element={<ProtectedRoute isAdmin={true}><NewTour/></ProtectedRoute> } />
-              <Route path='/admin/tour/:id' element={<ProtectedRoute isAdmin={true}><UpdateTour/></ProtectedRoute> } />
-              <Route path='/admin/safaris' element={<ProtectedRoute isAdmin={true}><SafariList/></ProtectedRoute> } />
-              <Route path='/admin/safaris/create' element={<ProtectedRoute isAdmin={true}><NewSafari/></ProtectedRoute> } />
-              <Route path='/admin/safari/:id' element={<ProtectedRoute isAdmin={true}><UpdateSafari/></ProtectedRoute> } />
-              <Route path='/admin/orders' element={<ProtectedRoute isAdmin={true}><TourOrderList/></ProtectedRoute> } />
-              <Route path='/admin/safariOrders' element={<ProtectedRoute isAdmin={true}><SafariOrderList/></ProtectedRoute> } />
-              <Route path='/admin/order/:id' element={<ProtectedRoute isAdmin={true}><UpdateTourOrder/></ProtectedRoute> } />
-              <Route path='/admin/safariOrder/:id' element={<ProtectedRoute isAdmin={true}><UpdateSafariOrder/></ProtectedRoute> } />
-              <Route path='/admin/users' element={<ProtectedRoute isAdmin={true}><UserList/></ProtectedRoute> } />
-              <Route path='/admin/user/:id' element={<ProtectedRoute isAdmin={true}><UpdateUser/></ProtectedRoute> } />
-              <Route path='/admin/reviews' element={<ProtectedRoute isAdmin={true}><TourReviewList/></ProtectedRoute> } />
-              <Route path='/admin/safariReviews' element={<ProtectedRoute isAdmin={true}><SafariReviewList/></ProtectedRoute> } />
+              <Route path='/admin/tours' element={<ProtectedRoute isAdmin={true}><TourList /></ProtectedRoute>} />
+              <Route path='/admin/tours/create' element={<ProtectedRoute isAdmin={true}><NewTour /></ProtectedRoute>} />
+              <Route path='/admin/tour/:id' element={<ProtectedRoute isAdmin={true}><UpdateTour /></ProtectedRoute>} />
+              <Route path='/admin/safaris' element={<ProtectedRoute isAdmin={true}><SafariList /></ProtectedRoute>} />
+              <Route path='/admin/safaris/create' element={<ProtectedRoute isAdmin={true}><NewSafari /></ProtectedRoute>} />
+              <Route path='/admin/safari/:id' element={<ProtectedRoute isAdmin={true}><UpdateSafari /></ProtectedRoute>} />
+              <Route path='/admin/orders' element={<ProtectedRoute isAdmin={true}><TourOrderList /></ProtectedRoute>} />
+              <Route path='/admin/safariOrders' element={<ProtectedRoute isAdmin={true}><SafariOrderList /></ProtectedRoute>} />
+              <Route path='/admin/order/:id' element={<ProtectedRoute isAdmin={true}><UpdateTourOrder /></ProtectedRoute>} />
+              <Route path='/admin/safariOrder/:id' element={<ProtectedRoute isAdmin={true}><UpdateSafariOrder /></ProtectedRoute>} />
+              <Route path='/admin/users' element={<ProtectedRoute isAdmin={true}><UserList /></ProtectedRoute>} />
+              <Route path='/admin/user/:id' element={<ProtectedRoute isAdmin={true}><UpdateUser /></ProtectedRoute>} />
+              <Route path='/admin/reviews' element={<ProtectedRoute isAdmin={true}><TourReviewList /></ProtectedRoute>} />
+              <Route path='/admin/safariReviews' element={<ProtectedRoute isAdmin={true}><SafariReviewList /></ProtectedRoute>} />
             </Route>
           </Routes>
         </HelmetProvider>
