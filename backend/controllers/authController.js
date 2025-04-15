@@ -4,15 +4,51 @@ const sendEmail = require('../utils/email');
 const ErrorHandler = require('../utils/errorHandler');
 const sendToken = require('../utils/jwt');
 const crypto = require('crypto');
+const fs = require('fs');
+const path = require('path');
+const axios = require('axios');
+const FormData = require('form-data');
+
+const uploadToImgBB = async (filePath) => {
+    const form = new FormData();
+    form.append('image', fs.createReadStream(filePath));
+
+    const res = await axios.post(`https://api.imgbb.com/1/upload?key=${process.env.IMGBB_API_KEY}`, form, {
+        headers: form.getHeaders()
+    });
+
+    fs.unlinkSync(filePath); // Clean temp file
+    return res.data.data.url;
+};
 
 
 //Register User
+// exports.registerUser = catchAsyncError(async (req, res, next) => {
+//     const { name, email, password } = req.body;
+//     let avatar;
+
+//     if (req.file) {
+//         avatar = `${process.env.BACKEND_URL}/uploads/user/${req.file.originalname}`
+//     }
+
+//     const user = await User.create({
+//         name,
+//         email,
+//         password,
+//         avatar
+//     });
+
+//     const token = user.getJwtToken();
+
+//     sendToken(user, 201, res);
+// })
 exports.registerUser = catchAsyncError(async (req, res, next) => {
     const { name, email, password } = req.body;
     let avatar;
 
     if (req.file) {
-        avatar = `${process.env.BACKEND_URL}/uploads/user/${req.file.originalname}`
+        const filePath = req.file.path;
+        avatar = await uploadToImgBB(filePath);
     }
 
     const user = await User.create({
@@ -22,10 +58,8 @@ exports.registerUser = catchAsyncError(async (req, res, next) => {
         avatar
     });
 
-    const token = user.getJwtToken();
-
     sendToken(user, 201, res);
-})
+});
 
 
 //Login User
@@ -153,29 +187,51 @@ exports.changePassword = catchAsyncError(async (req, res, next)=>{
 })
 
 //Update profile - /api/v1/update
-exports.updateProfile = catchAsyncError(async (req, res, next)=>{
+// exports.updateProfile = catchAsyncError(async (req, res, next)=>{
+//     let newUserData = {
+//         name: req.body.name,
+//         email: req.body.email
+//     }
+
+//     let avatar;
+
+//    if (req.file) {
+//     avatar = `${process.env.BACKEND_URL}/uploads/user/${req.file.originalname}`
+//     newUserData = {...newUserData, avatar}
+//    }
+
+//     const user = await User.findByIdAndUpdate(req.user.id, newUserData, {
+//         new: true,
+//         runValidators: true
+//     })
+
+//     res.status(200).json({
+//         success: true,
+//         user
+//     })
+// })
+exports.updateProfile = catchAsyncError(async (req, res, next) => {
     let newUserData = {
         name: req.body.name,
         email: req.body.email
+    };
+
+    if (req.file) {
+        const filePath = req.file.path;
+        const avatar = await uploadToImgBB(filePath);
+        newUserData.avatar = avatar;
     }
-
-    let avatar;
-
-   if (req.file) {
-    avatar = `${process.env.BACKEND_URL}/uploads/user/${req.file.originalname}`
-    newUserData = {...newUserData, avatar}
-   }
 
     const user = await User.findByIdAndUpdate(req.user.id, newUserData, {
         new: true,
         runValidators: true
-    })
+    });
 
     res.status(200).json({
         success: true,
         user
-    })
-})
+    });
+});
 
 
 //Admin

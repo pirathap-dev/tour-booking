@@ -3,14 +3,16 @@ const multer =require('multer');
 const path = require('path');
 
 
-const upload = multer({storage: multer.diskStorage({
-    destination: function(req, file, cb){
-        cb(null, path.join(__dirname,'..', 'uploads/user'))
-    },
-    filename: function(req, file, cb){
-        cb(null, file.originalname)
-    }
-})})
+// const upload = multer({storage: multer.diskStorage({
+//     destination: function(req, file, cb){
+//         cb(null, path.join(__dirname,'..', 'uploads/user'))
+//     },
+//     filename: function(req, file, cb){
+//         cb(null, file.originalname)
+//     }
+// })})
+
+const upload = multer({ dest: 'uploads/' });
 
 
 const { registerUser, loginUser, logoutUser, forgotPassword, resetPassword, getUserProfile, changePassword, updateProfile, getAllUsers, getUser, updateUser, deleteUser} = require('../controllers/authController');
