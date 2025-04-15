@@ -46,16 +46,18 @@ exports.registerUser = catchAsyncError(async (req, res, next) => {
     const { name, email, password } = req.body;
     let avatar;
 
+    // Ensure file exists in req.file
     if (req.file) {
         // Convert the image buffer to a base64 string
         const base64Image = req.file.buffer.toString('base64');
 
         try {
+            // Make a POST request to ImgBB API
             const response = await axios.post(`https://api.imgbb.com/1/upload?key=${process.env.IMGBB_API_KEY}`, {
-                image: base64Image,
-                name: req.file.originalname
+                image: base64Image // Send the base64 encoded image
             });
 
+            // If the upload is successful, set the avatar URL
             avatar = response.data.data.url;
         } catch (error) {
             console.error(error.response?.data || error.message);
@@ -63,6 +65,7 @@ exports.registerUser = catchAsyncError(async (req, res, next) => {
         }
     }
 
+    // Create a new user with the avatar URL from ImgBB (if available)
     const user = await User.create({
         name,
         email,
