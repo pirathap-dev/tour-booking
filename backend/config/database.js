@@ -18,7 +18,7 @@ const connectDatabase = async () => {
   if (isConnected) return;
 
   try {
-    const conn = await mongoose.connect(process.env.MONGO_URI, {
+    const conn = await mongoose.connect(process.env.DB_LOCAL_URI, {
       maxPoolSize: 10,
       serverSelectionTimeoutMS: 5000, // abort early if can't connect
       socketTimeoutMS: 45000,
