@@ -81,7 +81,7 @@ export default function Header() {
                                         }}
                                     />
                                 </figure>
-                                <span>{user.name}</span>
+                                <span>{user?.name}</span>
                             </div>
                         </Dropdown.Toggle>
                         <Dropdown.Menu>
