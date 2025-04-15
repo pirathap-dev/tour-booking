@@ -15,7 +15,6 @@ const corsOptions = {
 
 app.use(express.json());
 app.use(cors(corsOptions));
-app.options("*", cors(corsOptions));
 app.use(cookieParser());
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')))
 
