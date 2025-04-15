@@ -24,11 +24,11 @@ const book = require('./routes/book');
 const safari = require('./routes/safari');
 const safariBook = require('./routes/safariBook');
 
-app.use('/api/v1', auth);
-app.use('/api/v1', tour);
-app.use('/api/v1', book);
-app.use('/api/v1', safari);
-app.use('/api/v1', safariBook);
+app.use('/api/v1/', auth);
+app.use('/api/v1/', tour);
+app.use('/api/v1/', book);
+app.use('/api/v1/', safari);
+app.use('/api/v1/', safariBook);
 
 
 app.use(errorMiddleware);
