@@ -1,11 +1,11 @@
 {
   "name": "tour-booking",
   "version": "1.0.0",
-  "main": "api/server.js",
+  "main": "api/index.js",
   "scripts": {
-    "start": "nodemon backend/api/server.js",
-    "dev": "set NODE_ENV=development && nodemon backend/api/server.js",
-    "prod": "set NODE_ENV=production && nodemon backend/api/server.js"
+    "start": "nodemon api/index.js",
+    "dev": "set NODE_ENV=development && nodemon api/index.js",
+    "prod": "set NODE_ENV=production && nodemon api/index.js"
   },
   "keywords": [],
   "author": "Pirathap",

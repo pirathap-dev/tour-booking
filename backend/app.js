@@ -6,6 +6,10 @@ const cors = require('cors');
 const path =require('path');
 const dotenv = require('dotenv');
 dotenv.config({ path: path.join(__dirname, "config/config.env") });
+const connectDatabase = require('./config/database');// for vercel deployment only
+
+
+connectDatabase();// for vercel deployment only
 
 const corsOptions = {
     origin: process.env.FRONTEND_URL, // Frontend URL
