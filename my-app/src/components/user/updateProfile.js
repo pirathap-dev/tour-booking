@@ -8,7 +8,7 @@ import { useNavigate } from 'react-router-dom';
 
 export default function UpdateProfile() {
 
-    const { error, user, isUpdated } = useSelector(state => state.authState);
+    const { error, user, isUpdated , loading} = useSelector(state => state.authState);
     const [name, setName] = useState("");
     const [email, setEmail] = useState("");
     const [avatar, setAvatar] = useState("");
@@ -108,7 +108,7 @@ export default function UpdateProfile() {
                         </div>
                     </div>
 
-                    <button type="submit" className="btn update-btn btn-block mt-4 mb-3">Update</button>
+                    <button type="submit" className="btn update-btn btn-block mt-4 mb-3" disabled={loading} >Update</button>
                 </form>
             </div>
         </div>

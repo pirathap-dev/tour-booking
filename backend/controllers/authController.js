@@ -9,24 +9,46 @@ const path = require('path');
 const axios = require('axios');
 const FormData = require('form-data');
 
-const uploadImageToImgBB = async (imageBuffer) => {
+const uploadImageToImgBB = async (file) => {
     try {
-        const response = await axios.post(
-            `https://api.imgbb.com/1/upload?key=${process.env.IMGBB_API_KEY}`,
-            { image: imageBuffer.toString('base64') }
-        );
-        
-        if (!response.data.success) {
-            throw new Error('ImgBB upload failed');
+
+        if(!file || !file.buffer){
+            throw new Error('No file buffer found');
         }
-        
+
+        // List of supported formats
+        const supportedFormats = ['image/jpeg', 'image/png', 'image/gif', 'image/webp', 'image/bmp'];
+
+        // Check if the file's MIME type is supported
+        if (!supportedFormats.includes(file.mimetype)) {
+            throw new Error('Unsupported file format');
+        }
+
+        const form = new FormData();
+        form.append('key', process.env.IMGBB_API_KEY);
+        form.append('image', file.buffer, {
+            filename: file.originalname,
+            contentType: file.mimetype
+        });
+
+        const response = await axios.post('https://api.imgbb.com/1/upload', form, {
+            headers: form.getHeaders()
+        })
+
+        if (!response.data.success) throw new Error('ImgBB upload failed');
+
+        console.log(response);
+
         return response.data.data.url;
     } catch (error) {
-        console.error('ImgBB Upload Error:', error);
-        throw new ErrorHandler('Image upload failed. Please try again.', 500);
+        // Log the specific error message
+        if (error.message === 'Unsupported file format') {
+            throw new ErrorHandler('Please upload a valid image file. Supported formats: JPG, PNG, GIF, WEBP, BMP');
+        } else {
+            throw new ErrorHandler('Image upload failed');
+        }
     }
 };
-
 
 //Register User
 // exports.registerUser = catchAsyncError(async (req, res, next) => {
@@ -50,20 +72,10 @@ const uploadImageToImgBB = async (imageBuffer) => {
 // })
 exports.registerUser = catchAsyncError(async (req, res, next) => {
     const { name, email, password } = req.body;
-    
-    // Validate input
-    if (!name || !email || !password) {
-        return next(new ErrorHandler('Please provide name, email, and password', 400));
-    }
-
-    let avatar = process.env.DEFAULT_AVATAR_URL || 'https://example.com/default-avatar.png';
+    let avatar;
 
     if (req.file) {
-        try {
-            avatar = await uploadImageToImgBB(req.file.buffer);
-        } catch (error) {
-            return next(error);
-        }
+        avatar = await uploadImageToImgBB(req.file);
     }
 
     const user = await User.create({
@@ -72,6 +84,8 @@ exports.registerUser = catchAsyncError(async (req, res, next) => {
         password,
         avatar
     });
+
+    const token = user.getJwtToken();
 
     sendToken(user, 201, res);
 });
@@ -185,10 +199,10 @@ exports.getUserProfile = catchAsyncError(async (req, res, next) => {
 })
 
 //Change Password - /api/v1/password/change
-exports.changePassword = catchAsyncError(async (req, res, next)=>{
+exports.changePassword = catchAsyncError(async (req, res, next) => {
     const user = await User.findById(req.user.id).select('+password');
 
-    if(!await user.isValidPassword(req.body.oldPassword)){
+    if (!await user.isValidPassword(req.body.oldPassword)) {
         return next(new ErrorHandler('Old password is incorrect', 401));
     }
 
@@ -202,59 +216,36 @@ exports.changePassword = catchAsyncError(async (req, res, next)=>{
 })
 
 //Update profile - /api/v1/update
-// exports.updateProfile = catchAsyncError(async (req, res, next)=>{
-//     let newUserData = {
-//         name: req.body.name,
-//         email: req.body.email
-//     }
-
-//     let avatar;
-
-//    if (req.file) {
-//     avatar = `${process.env.BACKEND_URL}/uploads/user/${req.file.originalname}`
-//     newUserData = {...newUserData, avatar}
-//    }
-
-//     const user = await User.findByIdAndUpdate(req.user.id, newUserData, {
-//         new: true,
-//         runValidators: true
-//     })
-
-//     res.status(200).json({
-//         success: true,
-//         user
-//     })
-// })
 exports.updateProfile = catchAsyncError(async (req, res, next) => {
-    const newUserData = {
+    let newUserData = {
         name: req.body.name,
         email: req.body.email
-    };
+    }
+
+    let avatar;
 
     if (req.file) {
-        try {
-            newUserData.avatar = await uploadImageToImgBB(req.file.buffer);
-        } catch (error) {
-            return next(error);
-        }
+        avatar = await uploadImageToImgBB(req.file);
+        newUserData = { ...newUserData, avatar }
     }
+
 
     const user = await User.findByIdAndUpdate(req.user.id, newUserData, {
         new: true,
         runValidators: true
-    });
+    })
 
     res.status(200).json({
         success: true,
         user
-    });
-});
+    })
+})
 
 
 //Admin
 
 //Admin: Get all users - /api/v1//admin/users
-exports.getAllUsers = catchAsyncError(async (req, res, next)=>{
+exports.getAllUsers = catchAsyncError(async (req, res, next) => {
     const users = await User.find();
     res.status(200).json({
         success: true,
@@ -263,10 +254,10 @@ exports.getAllUsers = catchAsyncError(async (req, res, next)=>{
 })
 
 //Admin: Get specific users - /admin/user/:id
-exports.getUser = catchAsyncError(async (req, res, next)=>{
+exports.getUser = catchAsyncError(async (req, res, next) => {
     const user = await User.findById(req.params.id);
 
-    if(!user){
+    if (!user) {
         return next(new ErrorHandler(`User not found with this id: ${req.params.id}`))
     }
 
@@ -277,7 +268,7 @@ exports.getUser = catchAsyncError(async (req, res, next)=>{
 })
 
 //Admin: Update user - /admin/user/:id
-exports.updateUser = catchAsyncError(async (req, res, next)=>{
+exports.updateUser = catchAsyncError(async (req, res, next) => {
     const newUserData = {
         name: req.body.name,
         email: req.body.email,
@@ -296,9 +287,9 @@ exports.updateUser = catchAsyncError(async (req, res, next)=>{
 })
 
 //Admin: Delete user - /admin/user/:id
-exports.deleteUser = catchAsyncError(async (req, res, next)=>{
+exports.deleteUser = catchAsyncError(async (req, res, next) => {
     const user = await User.findById(req.params.id);
-    if(!user){
+    if (!user) {
         return next(new ErrorHandler(`User not found with this id: ${req.params.id}`))
     }
 
