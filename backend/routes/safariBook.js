@@ -6,14 +6,18 @@ const {newSafariBooking, getSingleSafariBooking, mySafariBookings, safariBooking
 const {isAuthenticatedUser, authorizeRoles} = require('../middlewares/authenticate');
 
 
-const upload = multer({storage: multer.diskStorage({
-    destination: function(req, file, cb){
-        cb(null, path.join(__dirname,'..', 'uploads/payment'))
-    },
-    filename: function(req, file, cb){
-        cb(null, file.originalname)
-    }
-})})
+// const upload = multer({storage: multer.diskStorage({
+//     destination: function(req, file, cb){
+//         cb(null, path.join(__dirname,'..', 'uploads/payment'))
+//     },
+//     filename: function(req, file, cb){
+//         cb(null, file.originalname)
+//     }
+// })})
+
+const upload = multer();
+
+
 
 router.route('/safariBook/new').post(isAuthenticatedUser,upload.single('paymentSlip'), newSafariBooking);
 router.route('/safariBook/:id').get(isAuthenticatedUser, getSingleSafariBooking);

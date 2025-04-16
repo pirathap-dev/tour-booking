@@ -11,6 +11,8 @@ import { Button } from "react-bootstrap";
 
 export default function UserList() {
     const { users = [], loading = true, error, isUserDeleted } = useSelector(state => state.userState);
+    const { user: authUser } = useSelector(state => state.authState);
+
 
     const dispatch = useDispatch();
 
@@ -68,8 +70,19 @@ export default function UserList() {
 
     const deleteHandler = (e, id) => {
         e.target.disabled = true;
+
+        if (authUser && authUser._id === id) {
+            toast("You cannot delete your own account!", {
+                type: "error",
+                position: "bottom-center"
+            });
+            e.target.disabled = false;
+            return;
+        }
+
         dispatch(deleteUser(id))
     }
+
 
     useEffect(() => {
         if (error) {

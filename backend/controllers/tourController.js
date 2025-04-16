@@ -3,6 +3,54 @@ const Tour = require('../models/tourModel');
 const ErrorHandler = require('../utils/errorHandler');
 const APIFeatures = require('../utils/apiFeatures');
 const mongoose = require('mongoose');
+const axios = require('axios');
+const FormData = require('form-data');
+
+
+
+const uploadImageToImgBB = async (file) => {
+    try {
+
+        if (!file || !file.buffer) {
+            throw new Error('No file buffer found');
+        }
+
+        // List of supported formats
+        const supportedFormats = ['image/jpeg', 'image/png', 'image/gif', 'image/webp', 'image/bmp'];
+
+        // Check if the file's MIME type is supported
+        if (!supportedFormats.includes(file.mimetype)) {
+            throw new Error('Unsupported file format');
+        }
+
+        const form = new FormData();
+        form.append('key', process.env.IMGBB_API_KEY);
+        form.append('image', file.buffer, {
+            filename: file.originalname,
+            contentType: file.mimetype
+        });
+
+        const response = await axios.post('https://api.imgbb.com/1/upload', form, {
+            headers: form.getHeaders()
+        })
+
+        if (!response.data.success) throw new Error('ImgBB upload failed');
+
+        console.log(response);
+
+        return response.data.data.url;
+    } catch (error) {
+        // Log the specific error message
+        if (error.message === 'Unsupported file format') {
+            throw new ErrorHandler('Please upload a valid image file. Supported formats: JPG, PNG, GIF, WEBP, BMP');
+        } else {
+            throw new ErrorHandler('Image upload failed');
+        }
+    }
+};
+
+
+
 
 //Get Tours - /api/v1/tours
 exports.getTours = catchAsyncError(async (req, res, next) => {
@@ -43,11 +91,11 @@ exports.newTour = catchAsyncError(async (req, res, next) => {
     // }
 
     //code from chatgpt
-    if (req.files && Array.isArray(req.files) && req.files.length > 0) {
-        req.files.forEach(file => {
-            let url = `${process.env.BACKEND_URL}/uploads/tour/${file.originalname}`;
-            images.push({ image: url });
-        });
+    const files = Array.isArray(req.files) ? req.files : req.file ? [req.file] : [];
+
+    for (const file of files) {
+        const imageUrl = await uploadImageToImgBB(file);
+        images.push({ image: imageUrl });
     }
 
     req.body.images = images;
@@ -104,11 +152,11 @@ exports.updateTours = catchAsyncError(async (req, res, next) => {
         // }
 
         //code from chatgpt
-        if (req.files && Array.isArray(req.files) && req.files.length > 0) {
-            req.files.forEach(file => {
-                let url = `${process.env.BACKEND_URL}/uploads/tour/${file.originalname}`;
-                images.push({ image: url });
-            });
+        const files = Array.isArray(req.files) ? req.files : req.file ? [req.file] : [];
+
+        for (const file of files) {
+            const imageUrl = await uploadImageToImgBB(file);
+            images.push({ image: imageUrl });
         }
 
         req.body.images = images;

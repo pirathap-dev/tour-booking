@@ -287,16 +287,43 @@ exports.updateUser = catchAsyncError(async (req, res, next) => {
 })
 
 //Admin: Delete user - /admin/user/:id
+// exports.deleteUser = catchAsyncError(async (req, res, next) => {
+//     const user = await User.findById(req.params.id);
+//     if (!user) {
+//         return next(new ErrorHandler(`User not found with this id: ${req.params.id}`))
+//     }
+
+//     await User.findByIdAndDelete(req.params.id);
+
+//     res.status(200).json({
+//         success: true
+//     })
+
+// })
+
 exports.deleteUser = catchAsyncError(async (req, res, next) => {
-    const user = await User.findById(req.params.id);
+    try{
+        const user = await User.findById(req.params.id);
+    
     if (!user) {
-        return next(new ErrorHandler(`User not found with this id: ${req.params.id}`))
+        return next(new ErrorHandler(`User not found with this id: ${req.params.id}`, 404));
+    }
+
+    // Prevent admin from deleting themselves
+    if (req.user.id === req.params.id) {
+        return next(new ErrorHandler("Admin cannot delete themselves", 400));
     }
 
     await User.findByIdAndDelete(req.params.id);
 
     res.status(200).json({
-        success: true
-    })
-
-})
+        success: true,
+        message: "User deleted successfully"
+    });
+    }
+    catch{
+        if (error.message === 'Admin cannot delete themselves') {
+            throw new ErrorHandler('Admin cannot delete themselves');
+        }
+    }
+});

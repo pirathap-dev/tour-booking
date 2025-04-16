@@ -7,14 +7,18 @@ const path = require('path');
 
 
 
-const upload = multer({storage: multer.diskStorage({
-    destination: function(req, file, cb){
-        cb(null, path.join(__dirname,'..', 'uploads/tour'))
-    },
-    filename: function(req, file, cb){
-        cb(null, file.originalname)
-    }
-})})
+// const upload = multer({storage: multer.diskStorage({
+//     destination: function(req, file, cb){
+//         cb(null, path.join(__dirname,'..', 'uploads/tour'))
+//     },
+//     filename: function(req, file, cb){
+//         cb(null, file.originalname)
+//     }
+// })})
+
+const upload = multer();
+
+
 
 router.route('/tours').get(getTours);
 router.route('/tour/:id').get(getSingleTour);

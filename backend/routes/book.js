@@ -6,14 +6,16 @@ const {newBooking, getSingleBooking, myBookings, bookings, updateBooking, delete
 const {isAuthenticatedUser, authorizeRoles} = require('../middlewares/authenticate');
 
 
-const upload = multer({storage: multer.diskStorage({
-    destination: function(req, file, cb){
-        cb(null, path.join(__dirname,'..', 'uploads/payment'))
-    },
-    filename: function(req, file, cb){
-        cb(null, file.originalname)
-    }
-})})
+// const upload = multer({storage: multer.diskStorage({
+//     destination: function(req, file, cb){
+//         cb(null, path.join(__dirname,'..', 'uploads/payment'))
+//     },
+//     filename: function(req, file, cb){
+//         cb(null, file.originalname)
+//     }
+// })})
+
+const upload = multer();
 
 router.route('/book/new').post(isAuthenticatedUser,upload.single('paymentSlip'), newBooking);
 router.route('/book/:id').get(isAuthenticatedUser, getSingleBooking);

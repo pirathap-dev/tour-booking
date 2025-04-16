@@ -3,6 +3,50 @@ const catchAsyncError = require('../middlewares/catchAsyncError')
 const SafariBooking = require('../models/safariBookingModel');
 const Safari = require('../models/safariModel');
 const ErrorHandler = require('../utils/errorHandler');
+const axios = require('axios');
+const FormData = require('form-data');
+
+
+const uploadImageToImgBB = async (file) => {
+    try {
+
+        if(!file || !file.buffer){
+            throw new Error('No file buffer found');
+        }
+
+        // List of supported formats
+        const supportedFormats = ['image/jpeg', 'image/png', 'image/gif', 'image/webp', 'image/bmp'];
+
+        // Check if the file's MIME type is supported
+        if (!supportedFormats.includes(file.mimetype)) {
+            throw new Error('Unsupported file format');
+        }
+
+        const form = new FormData();
+        form.append('key', process.env.IMGBB_API_KEY);
+        form.append('image', file.buffer, {
+            filename: file.originalname,
+            contentType: file.mimetype
+        });
+
+        const response = await axios.post('https://api.imgbb.com/1/upload', form, {
+            headers: form.getHeaders()
+        })
+
+        if (!response.data.success) throw new Error('ImgBB upload failed');
+
+        console.log(response);
+
+        return response.data.data.url;
+    } catch (error) {
+        // Log the specific error message
+        if (error.message === 'Unsupported file format') {
+            throw new ErrorHandler('Please upload a valid image file. Supported formats: JPG, PNG, GIF, WEBP, BMP');
+        } else {
+            throw new ErrorHandler('Image upload failed');
+        }
+    }
+};
 
 // Create new booking - /api/v1/safariBooking/new
 exports.newSafariBooking = catchAsyncError(async (req, res, next) => {
@@ -50,9 +94,11 @@ exports.newSafariBooking = catchAsyncError(async (req, res, next) => {
         return next(new ErrorHandler('Payment slip is required', 400));
     }
 
-    // Convert file path
-    const paymentSlip = `${process.env.BACKEND_URL}/uploads/payment/${req.file.originalname}`;
+    let paymentSlip;
 
+    if(req.file){
+        paymentSlip = await uploadImageToImgBB(req.file);
+    }
 
     // Create booking
     const safariBooking = await SafariBooking.create({

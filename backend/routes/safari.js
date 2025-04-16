@@ -7,14 +7,17 @@ const path = require('path');
 
 
 
-const upload = multer({storage: multer.diskStorage({
-    destination: function(req, file, cb){
-        cb(null, path.join(__dirname,'..', 'uploads/safari'))
-    },
-    filename: function(req, file, cb){
-        cb(null, file.originalname)
-    }
-})})
+// const upload = multer({storage: multer.diskStorage({
+//     destination: function(req, file, cb){
+//         cb(null, path.join(__dirname,'..', 'uploads/safari'))
+//     },
+//     filename: function(req, file, cb){
+//         cb(null, file.originalname)
+//     }
+// })})
+
+const upload = multer();
+
 
 router.route('/safaris').get(getSafari);
 router.route('/safari/:id').get(getSingleSafari);
